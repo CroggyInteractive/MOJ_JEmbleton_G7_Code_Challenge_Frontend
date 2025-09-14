@@ -40,7 +40,7 @@
     {% if isOk %}
 
       {% if cases %}
-        {% for case cases %}
+        {% for case in cases %}
           <div class="govuk-accordion__section">
             {{ caseDisplay(case) }}
           </div>

@@ -1,0 +1,12 @@
+{% extends "template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+<h1 clases="govuk-heading-l">Could not found case with Id: {{ caseId }}</h1>
+
+    {{ govukButton({
+    text: "Home",
+    href: "/"
+    })
+    }}
+    {% endblock %}

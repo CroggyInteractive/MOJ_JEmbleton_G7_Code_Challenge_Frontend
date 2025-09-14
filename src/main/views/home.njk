@@ -1,121 +1,83 @@
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "macros/case-display.njk" import caseDisplay %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "template.njk" %}
 
-<!-- You may want to make further use of these components: https://design-system.service.gov.uk/components/
-but ultimately it is up to you -->
-
 {% block content %}
-  <h1 class="govuk-heading-xl">Welcome to your dev test!</h1>
 
-  <!-- The freedom is yours. You can design the solution however you like, however there is a starting point provided
-  to ensure you have both services running. You may want to make use of the Gov UK Components:
-  https://design-system.service.gov.uk/components/ to add tabs and so forth :) -->
-
-  {% if example.id %}
-
-    {{ govukSummaryList({
-      rows: [
-        {
-          key: {
-            text: "ID"
-          },
-          value: {
-            text: example.id
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case id ?!"
-              }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Case Number"
-          },
-          value: {
-            text: example.caseNumber
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case number"
-              }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Title"
-          },
-          value: {
-            html: example.title
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case title"
-              }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Description"
-          },
-          value: {
-            html: example.description
-          },
-          actions: {
-            items: [
-               {
-                 href: "#",
-                 text: "Delete",
-                 visuallyHiddenText: "Delete description"
-               },
-               {
-                 href: "#",
-                 text: "Change",
-                 visuallyHiddenText: "Change description"
-               }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Status"
-          },
-          value: {
-            html: example.status
-          },
-          actions: {
-            items: [
-            ]
-          }
-        },
-        {
-          key: {
-           text: "Created Date"
-          },
-          value: {
-           html: example.createdDate
-          },
-          actions: {
-           items: [
-           ]
-          }
-        }
-      ]
+{{ govukButton({
+      id: "create-button",
+      text: "Create a new Case",
+      href: "/create-case"
     }) }}
 
-  {% endif %}
+<hr class="govuk-section-break govuk-section-break--visible">
+<div class="govuk-!-padding-bottom-2"></div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third-from-desktop">
+
+    <h3 class="govuk-heading-m">Search for a case</h3>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="case-id">
+        Case ID
+      </label>
+      <p id="case-id-error" class="govuk-error-message" style="display: none;">
+        <span class="govuk-visually-hidden">Error:</span> Enter a valid Case ID
+      </p>
+      <input class="govuk-input" id="case-id" name="caseId" type="number" aria-describedby="case-id-hint case-id-error">
+    </div>
+
+    {{ govukButton({
+      id: "find-button",
+      text: "Find"
+    }) }}
+
+  </div>
+  <div class="govuk-grid-column-two-thirds-from-desktop">
+    {% if isOk %}
+
+      {% if cases %}
+        {% for case cases %}
+          <div class="govuk-accordion__section">
+            {{ caseDisplay(case) }}
+          </div>
+        {% endfor %}
+
+      {% else %}
+        <p> No cases found </p>
+      {% endif %}
+
+    {% else %}
+
+      <p>API Error</p>
+
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const caseIdInput = document.getElementById('case-id');
+  const findButton = document.getElementById('find-button');
+  const errorMessage = document.getElementById('case-id-error');
+  const formGroup = caseIdInput.closest('.govuk-form-group');
+
+  findButton.addEventListener('click', function() {
+
+    const inputValue = caseIdInput.value.trim();
+
+    if (inputValue !== "") {
+
+      window.location.href = `/show-case/${inputValue}`;
+
+    } else {
+      errorMessage.style.display = "block";
+      formGroup.classList.add('govuk-form-group--error');
+      caseIdInput.classList.add('govuk-input--error');
+    }
+  });
+</script>
 
 {% endblock %}

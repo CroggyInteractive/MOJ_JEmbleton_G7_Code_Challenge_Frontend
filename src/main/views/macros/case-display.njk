@@ -1,0 +1,98 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro caseDisplay(task) %}
+  {{ govukSummaryList({
+    rows: [
+      {
+        key: {
+          text: "ID"
+        },
+        value: {
+          text: task.id
+        },
+        actions: {
+          items: [
+            {
+              href: "/delete-task/" + task.id,
+              text: "Delete",
+              visuallyHiddenText: "Delete Task"
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Case Number"
+        },
+        value: {
+          text: task.caseNumber
+        },
+        actions: {
+          items: []
+        }
+      },
+      {
+        key: {
+          text: "Title"
+        },
+        value: {
+          html: task.title
+        },
+        actions: {
+          items: []
+        }
+      },
+      {
+        key: {
+          text: "Description"
+        },
+        value: {
+          html: task.description
+        },
+        actions: {
+          items: []
+        }
+      },
+      {
+        key: {
+          text: "Status"
+        },
+        value: {
+          html: task.status
+        },
+        actions: {
+          items: [
+          {
+              href: "/update-status/" + task.id,
+              text: "Update",
+              visuallyHiddenText: "Delete Task"
+            }
+          ]
+        }
+      },
+      {
+        key: {
+          text: "Created Date"
+        },
+        value: {
+          html: task.createdDate
+        },
+        actions: {
+          items: []
+        }
+      },
+      {
+        key: {
+          text: "DueDate"
+        },
+        value: {
+          html: task.dueDateTime
+        },
+        actions: {
+          items: []
+        }
+      }
+    ]
+  }) }}
+  <div class="govuk-!-padding-bottom-4"></div>
+{% endmacro %}

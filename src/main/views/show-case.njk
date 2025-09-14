@@ -1,0 +1,24 @@
+{% extends "template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "macros/case-display.njk" import caseDisplay %}
+
+{% block content %}
+
+    <h2 class="govuk-heading-l">Case</h2>
+
+    {% if isOk and case %}
+
+    {{ caseDisplay(case) }}
+
+    {{ govukButton({
+    text: "Home",
+    href: "/"
+    }) }}
+
+    {% elif isNotFound %}
+
+    <p>Case Not Found</p>
+
+    {% endif %}
+
+   {% endblock %}
